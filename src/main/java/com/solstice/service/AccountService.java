@@ -9,7 +9,6 @@ import com.solstice.util.BadRequestException;
 import com.solstice.util.NotFoundException;
 import java.util.List;
 import java.util.Optional;
-import netscape.security.ForbiddenTargetException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +64,7 @@ public class AccountService {
 
     if(!myAccount.getAddresses().contains(myAddress) || myAddress.getAccount().getAccountId() != accountId) {
       logger.error("Address {} found but does not belong to account {}", addressId, accountId);
-      throw new ForbiddenTargetException();
+      throw new BadRequestException();
     }
 
     return myAddress;
