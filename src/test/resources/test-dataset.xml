@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+  <account account_id="1" first_name="test1first" last_name="test1last" email="test1email"/>
+  <account account_id="2" first_name="test2first" last_name="test2last" email="test2email"/>
+  <address address_id="1" building_num = "1" city="Chicago" country="USA" state="IL" street_name="Test St" zip_code="60606" account_id="1"/>
+  <address address_id="2" building_num = "2" city="Chicago" country="USA" state="IL" street_name="Road St" zip_code="60606" account_id="1"/>
+  <address address_id="3" building_num = "3" city="Chicago" country="USA" state="IL" street_name="Test St" zip_code="60606" account_id="2"/>
+</dataset>
