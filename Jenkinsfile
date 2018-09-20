@@ -10,7 +10,7 @@ pipeline {
        }
        stage('Deploy'){
                   steps{
-                      sh 'cf push account-service -p ./build/libs/account-service-0.0.1-SNAPSHOT.jar'
+                      sh 'cf push account-service -p build/libs/account-service-0.0.1-SNAPSHOT.jar'
                   }
        }
     }
