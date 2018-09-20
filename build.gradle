@@ -44,8 +44,6 @@ dependencies {
     compile('io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry')
     compile('org.springframework.boot:spring-boot-starter-hateoas')
     compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
-    compile('org.springframework.cloud:spring-cloud-starter-hystrix-dashboard')
-    compile('org.springframework.boot:spring-boot-starter-actuator')
     runtime('org.springframework.boot:spring-boot-devtools')
     runtime('mysql:mysql-connector-java')
     testCompile('org.springframework.cloud:spring-cloud-starter-eureka-server')
