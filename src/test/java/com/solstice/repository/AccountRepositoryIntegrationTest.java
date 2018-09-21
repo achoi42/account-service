@@ -1,12 +1,13 @@
 package com.solstice.repository;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.solstice.model.Account;
+import com.solstice.model.domain.Account;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,6 +60,4 @@ public class AccountRepositoryIntegrationTest {
     assertThat(outcome.getEmail(), is(equalTo(account.getEmail())));
     assertThat(outcome.getAddresses(),is(empty()));
   }
-
-
 }

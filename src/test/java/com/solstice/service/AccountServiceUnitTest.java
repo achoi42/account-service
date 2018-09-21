@@ -5,14 +5,12 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
-import com.solstice.model.Account;
-import com.solstice.model.Address;
+import com.solstice.model.domain.Account;
+import com.solstice.model.domain.Address;
 import com.solstice.repository.AccountRepository;
 import com.solstice.repository.AddressRepository;
 import com.solstice.util.NotFoundException;
@@ -25,7 +23,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -130,7 +127,7 @@ public class AccountServiceUnitTest {
     when(accountRepository.getOne(anyLong()))
         .thenReturn(account);
 
-    when(addressRepository.save(ArgumentMatchers.any()))
+    when(addressRepository.save(any()))
         .thenReturn(created);
 
     Address outcome = accountService.addAccountAddress(-1, created);
@@ -175,44 +172,14 @@ public class AccountServiceUnitTest {
     when(accountRepository.getOne(anyLong()))
         .thenReturn(account);
 
-    when(addressRepository.getOne(anyLong()))
+    when(addressRepository.save(any()))
         .thenReturn(address);
-
-    doNothing().when(addressRepository).updateAddress(
-        anyString(), anyInt(), anyString(), anyString(), anyInt(), anyString(), anyLong()
-    );
 
     Address outcome = accountService.updateAccountAddress(account.getAccountId(), address.getAddressId(), address);
 
     assertThat(outcome.getStreetName(),is(equalTo(address.getStreetName())));
     assertThat(outcome.getBuildingNum(), is(equalTo(address.getBuildingNum())));
     assertThat(outcome.getAccount().getAccountId(),is(equalTo(address.getAddressId())));
-  }
-
-  @Test
-  public void testUpdateAddress_validAccountIdInvalidBody_success() {
-    Account rogue = new Account();
-    rogue.setAccountId(-999);
-
-    Address toUpdate = new Address();
-    toUpdate.setAccount(rogue);
-
-    when(accountRepository.findById(anyLong()))
-        .thenReturn(Optional.of(account));
-
-    when(addressRepository.findById(anyLong()))
-        .thenReturn(Optional.of(address));
-
-    when(accountRepository.getOne(anyLong()))
-        .thenReturn(account);
-
-    when(addressRepository.getOne(anyLong()))
-        .thenReturn(address);
-
-    Address outcome = accountService.updateAccountAddress(-1,-1,toUpdate);
-
-    assertThat(outcome, is(equalTo(address)));
-    assertThat(outcome.getAccount().getAccountId(), is(equalTo(account.getAccountId())));
   }
 
   @Test

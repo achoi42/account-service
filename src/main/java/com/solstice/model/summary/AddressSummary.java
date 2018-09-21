@@ -12,7 +12,6 @@ public class AddressSummary {
   private long accountId;
 
   public AddressSummary() {
-
   }
 
   public AddressSummary(long addressId, String streetName, int buildingNum, String city,

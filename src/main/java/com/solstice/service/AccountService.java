@@ -4,7 +4,6 @@ import com.solstice.model.domain.Account;
 import com.solstice.model.domain.Address;
 import com.solstice.repository.AccountRepository;
 import com.solstice.repository.AddressRepository;
-import com.solstice.util.AddressPresenter;
 import com.solstice.util.BadRequestException;
 import com.solstice.util.NotFoundException;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,29 +19,16 @@ public class AccountService {
 
   private AccountRepository accountRepository;
   private AddressRepository addressRepository;
-  private AddressPresenter addressPresenter;
 
-  @Transient
   private Logger logger = LoggerFactory.getLogger(getClass());
 
   protected AccountService() {
   }
 
   @Autowired
-  public AccountService(AccountRepository accountRepository, AddressRepository addressRepository, AddressPresenter addressPresenter) {
+  public AccountService(AccountRepository accountRepository, AddressRepository addressRepository) {
     this.accountRepository = accountRepository;
     this.addressRepository = addressRepository;
-    this.addressPresenter = addressPresenter;
-  }
-
-//  public Account updateAccount(long id) {
-//    checkId(accountRepository, id);
-//
-//    Account existing =
-//  }
-
-  public List<Account> fetchAccounts() {
-    return accountRepository.findAll();
   }
 
   public List<Address> fetchAddresses(long id) {
@@ -77,10 +62,8 @@ public class AccountService {
       logger.error("Client attempted to add null address to account " + myAccount.getAccountId());
       return null;
     }
-    Address saved = addressRepository.save(address);
-    myAccount.addAddress(saved);
-    accountRepository.save(myAccount);
-    return saved;
+    address.setAccount(accountRepository.getOne(accountId));
+    return addressRepository.save(address);
   }
 
   public Address updateAccountAddress(long accountId, long addressId, Address toUpdate) {
@@ -98,36 +81,15 @@ public class AccountService {
       throw new BadRequestException();
     }
 
-    // Disassociate old address with account
-    Account myAccount = accountRepository.getOne(accountId);
-    Address old = addressRepository.getOne(addressId);
-    int oldIdx = myAccount.getAddresses().indexOf(old);
-    myAccount.removeAddress(myAccount.getAddresses().get(oldIdx));
+    toUpdate.setAddressId(addressId);
+    toUpdate.setAccount(accountRepository.getOne(accountId));
 
-    // Update old address with new attributes in repository
-    addressRepository.updateAddress(
-        toUpdate.getStreetName(),
-        toUpdate.getBuildingNum(),
-        toUpdate.getCity(),
-        toUpdate.getState(),
-        toUpdate.getZipCode(),
-        toUpdate.getCountry(),
-        addressId
-    );
-
-    // Associate updated address with account
-    Address updated = addressRepository.getOne(addressId);
-    myAccount.addAddress(updated);
-    accountRepository.save(myAccount);
-
-    return updated;
+    return addressRepository.save(toUpdate);
   }
 
   public void deleteAccountAddress(long accountId, long addressId) {
     checkId(accountRepository, accountId);
     checkId(addressRepository, addressId);
-
-
 
     addressRepository.deleteById(addressId);
   }

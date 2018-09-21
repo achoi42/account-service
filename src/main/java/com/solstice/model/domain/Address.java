@@ -3,6 +3,7 @@ package com.solstice.model.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import java.util.stream.Collectors;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -119,7 +120,8 @@ public class Address {
     if(this.account.getAddresses() == null) {
       logger.warn("Passed account " + account.getAccountId() + " with null address list");
     }
-    if(this.account.getAddresses() != null && !this.account.getAddresses().contains(this)) {
+    if(this.account.getAddresses() != null &&
+        this.account.getAddresses().stream().filter(a -> a.getAddressId() == this.addressId).collect(Collectors.toList()).size() == 0) {
       this.account.addAddress(this);
       logger.info("Successfully added account " + account.getAccountId() + " to address " + getAddressId());
     }

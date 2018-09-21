@@ -6,7 +6,7 @@ import static org.hamcrest.Matchers.is;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.solstice.model.Address;
+import com.solstice.model.domain.Address;
 import java.util.List;
 import java.util.Optional;
 import org.junit.Test;
@@ -78,5 +78,17 @@ public class AddressRepositoryIntegrationTest {
 
     assertThat(addressList.size(), is(3));
     assertThat(checkUpdated.isPresent(), is(false));
+  }
+
+  @Test
+  public void testFindById_validId_success() {
+    Address address = new Address();
+    address.setBuildingNum(12345);
+    address.setCity("Sandwich");
+    entityManager.persist(address);
+
+    Address outcome = addressRepository.getOne(address.getAddressId());
+    assertThat(outcome.getBuildingNum(), is(equalTo(address.getBuildingNum())));
+    assertThat(outcome.getCity(), is(equalTo(address.getCity())));
   }
 }

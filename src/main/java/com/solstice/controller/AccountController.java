@@ -1,8 +1,8 @@
 package com.solstice.controller;
 
 import com.solstice.model.domain.Address;
-import com.solstice.service.AccountService;
 import com.solstice.model.summary.AddressSummary;
+import com.solstice.service.AccountService;
 import com.solstice.util.AddressPresenter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,12 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class AccountController {
+public class  AccountController {
 
   private AccountService accountService;
   private AddressPresenter addressPresenter;
@@ -64,10 +63,5 @@ public class AccountController {
   public ResponseEntity deleteAddress(@PathVariable(name="acctId") long accountId, @PathVariable(name="addrId") long addressId) {
     accountService.deleteAccountAddress(accountId, addressId);
     return new ResponseEntity(HttpStatus.NO_CONTENT);
-  }
-
-  @RequestMapping("/addresses")
-  public String getAddress() {
-    return "No.";
   }
 }

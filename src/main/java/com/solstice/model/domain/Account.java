@@ -43,7 +43,7 @@ public class Account {
     this.lastName = lastName;
     this.email = email;
     if(address == null) {
-      this.address = new ArrayList<Address>(Collections.emptyList());
+      this.address = new ArrayList<>(Collections.emptyList());
     }
     else {
       this.address = address;
@@ -51,7 +51,7 @@ public class Account {
   }
 
   public Account(){
-    address = new ArrayList<Address>(Collections.emptyList());
+    address = new ArrayList<>(Collections.emptyList());
   }
 
   public long getAccountId() {
